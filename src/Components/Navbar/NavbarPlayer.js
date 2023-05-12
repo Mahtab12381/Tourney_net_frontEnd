@@ -1,7 +1,7 @@
 function NavbarPlayer(){
     return(
         <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div className="container-fluid">
                 <a className="navbar-brand" href="/">TourneyNet</a>
                 <div className="d-flex">
@@ -11,7 +11,7 @@ function NavbarPlayer(){
                     </li><li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/signup">Team</a>
                     </li><li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/contactus">Tournaments</a>
+                    <a className="nav-link active" aria-current="page" href="/tournament">Tournaments</a>
                     </li> <li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/contactus">Message</a>
                     </li>  

@@ -16,6 +16,15 @@
   
   footer {
     background: #212529;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
+  footer h6{
+  color:white;
+  }
   
+  footer.w-100.py-4.flex-shrink-0.fixed-bottom {
+    height: 55px;
+}
