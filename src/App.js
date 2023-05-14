@@ -9,7 +9,8 @@ import Logout from './Components/Logout';
 import Registration from './Components/Registration/Registration';
 import HomepageOrg from './Components/Homepage/HomepageOrg';
 import HomepageFans from './Components/Homepage/HomepageFan';
-import Tournament from './Components/PlayerComponents/Tournament/Tournament';
+import Tournament from './Components/Tournament/Tournament';
+import TournamentDetails from './Components/Tournament/TournamentDetails';
 function App() {
   return (
     <>
@@ -23,7 +24,7 @@ function App() {
         <Route path="/logout" element={<Logout/>}/>
         <Route path="/signup" element={<Registration/>}/>
         <Route path="/tournament" element={<Tournament/>}/>
-
+        <Route path="/view/:id" element={<TournamentDetails/>}/>
       </Routes>
     </Router>
     <Footer/>

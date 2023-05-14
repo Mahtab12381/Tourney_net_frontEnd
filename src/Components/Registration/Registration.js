@@ -8,7 +8,7 @@ function Registration(){
     const [firstname,setFirstname]=useState("");
     const [lastname,setLastname]=useState("");
     const [email,setEmail]=useState("");
-    const [type,setType]=useState("");
+    const [type,setType]=useState("Player");
     const navigate = useNavigate();
 
     async function handlereg(){
@@ -46,7 +46,7 @@ function Registration(){
                 <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="Password" className="form-control"></input>
                 <br/>
                 <select value={type} className='form-control' onChange={(e)=>setType(e.target.value)}>
-                    <option value="player">Player</option>
+                    <option value="Player">Player</option>
                     <option value="Organizer">Organizer</option>
                     <option value="Fan">Fan</option>
                 </select>
