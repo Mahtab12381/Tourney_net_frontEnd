@@ -4,7 +4,9 @@ import NavbarFan from "../Navbar/NavbarFan";
 import NavbarOrg from "../Navbar/NavbarOrg";
 import NavbarPlayer from "../Navbar/NavbarPlayer";
 import { useState,useEffect } from "react";
+import './Tournament.css';
 function TournamentDetails() {
+  
     const userType = localStorage.getItem('user-info') ? JSON.parse(localStorage.getItem('user-info')).Type : null;
     const navigate=useNavigate();
     const [result,setResult] =useState();   
@@ -12,6 +14,7 @@ function TournamentDetails() {
     const [Participants,setParticipants] =useState();
     const [matches,setMatches] =useState();
   const { id } = useParams();
+  const tournamentId = id;
   if(!localStorage.getItem('user-info')){
     navigate('/login');
   }
@@ -33,6 +36,86 @@ function TournamentDetails() {
     }
     getResult();
 },[url]);
+
+async function generateMatches(Participants, tournamentId) {
+  const randommatches = [];
+  
+  for (let i = 0; i < Participants.length; i++) {
+    for (let j = i + 1; j < Participants.length; j++) {
+      const randommatch = {
+        Match_number: randommatches.length + 1,
+        Match_start_time: new Date().toISOString(),
+        Match_end_time: new Date().toISOString(),
+        w_score: 1,
+        l_score: 1,
+        Tournament_id: tournamentId,
+        Participant_participant_id:1,
+        Match_winner_Name: '---',
+        Match_loser_Name: '---',
+        participant_name_1: Participants[i].team_name,
+        participant_name_2: Participants[j].team_name,
+       
+      };
+      randommatches.push(randommatch);
+      let result = await fetch("http://localhost:51753/api/matches/create",{
+          method:'POST',
+          headers:{
+              "Content-Type":"application/json",
+              "Accept":"application/json"
+          },
+          body:JSON.stringify(randommatch)
+      });
+      result = await result.json();
+      console.log(result);
+    }
+  }
+  
+  return randommatches;
+}
+
+async function generatePointTable(Participants) {
+  const pointTable = [];
+
+  // Initialize point table with participants' IDs and names
+  for (let i = 0; i < Participants.length; i++) {
+    const participant = {
+      participant_id: Participants[i].participant_id,
+      tournament_id: tournamentId,
+      Matches_Played: 0,
+      Matches_Won: 0,
+      Matches_Lost: 0,
+      Total_Point: 0,
+      team_name: Participants[i].team_name,
+    };
+    pointTable.push(participant);
+    let result = await fetch("http://localhost:51753/api/rankings/create",{
+          method:'POST',
+          headers:{
+              "Content-Type":"application/json",
+              "Accept":"application/json"
+          },
+          body:JSON.stringify(participant)
+      });
+      result = await result.json();
+      console.log(result);
+  }
+ // Sort point table by total points
+  rankings.sort((a, b) => b.Total_point - a.Total_point);
+
+  return pointTable;
+}
+
+
+
+function genMatch(){
+   generateMatches(Participants, tournamentId);
+   alert("Matches Generated");
+}
+function getTable(){
+  console.log(generatePointTable(Participants));
+  alert("Table Generated");
+}
+
   return(
     <>
      {userType==="Organizer"?<NavbarOrg/>:userType==="Fan"?<NavbarFan/>:<NavbarPlayer/>}
@@ -48,53 +131,57 @@ function TournamentDetails() {
       <th>Matches Won</th>
       <th>Matches Lost</th>
       <th>Total Points</th>
+      <th>
+      <button onClick={getTable}>Generate Table</button>
+      </th>
     </tr>
   </thead>
   <tbody>
     {result?rankings.map((ranking,index) => (
       <tr key={ranking.ranking_id}>
         <td>{index + 1}</td>
-        <td>{ranking.participant_id}</td>
+        <td>{ranking.team_name}</td>
         <td>{ranking.Match_palyed}</td>
         <td>{ranking.Match_won}</td>
         <td>{ranking.Match_lost}</td>
         <td>{ranking.Total_point}</td>
+        <td></td>
       </tr>
     )):null} 
   </tbody>
 </table>
 <h1>Match List</h1>
-<div class="large-table">
+<div class="large-table-3">
 <table>
   <thead>
     <tr>
-      <th>Match ID</th>
       <th>Match Number</th>
       <th>Start Time</th>
       <th>End Time</th>
-      <th>Winner Team ID</th>
-      <th>Loser Team ID</th>
+      <th>Winner Team </th>
+      <th>Loser Team </th>
       <th>Winner Score</th>
       <th>Loser Score</th>
       <th>Participant 1</th>
       <th>Participant 2</th>
-      <th>Tournament ID</th>
+      <th>
+      <button onClick={genMatch}>Generate Matches</button>
+      </th>
     </tr>
   </thead>
   <tbody>
     {result ? matches.map((match) => (
       <tr key={match.Match_id}>
-        <td>{match.Match_id}</td>
         <td>{match.Match_number}</td>
         <td>{match.Match_start_time}</td>
         <td>{match.Match_end_time}</td>
-        <td>{match.Match_winner_team_id}</td>
-        <td>{match.Match_loser_team_id}</td>
+        <td>{match.Match_winner_Name}</td>
+        <td>{match.Match_loser_Name}</td>
         <td>{match.w_score}</td>
         <td>{match.l_score}</td>
         <td>{match.participant_name_1}</td>
         <td>{match.participant_name_2}</td>
-        <td>{match.Tournament_id}</td>
+        <td></td>
       </tr>
     )) : null}
   </tbody>

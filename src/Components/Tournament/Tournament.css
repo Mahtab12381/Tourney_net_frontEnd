@@ -49,3 +49,11 @@ th {
     background-color: #0275d8;
     color: white;
 }
+.large-table-team-2{
+    overflow-y: scroll;
+    height: 350px;
+}
+.large-table-3 {
+    height: 466px;
+    overflow-y: scroll;
+}
