@@ -57,3 +57,16 @@ h3 {}
 button.btn.btn-primary.single-btn {
     width: 100%;
 }
+
+p.flex-end-2 {
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 5px;
+}
+p.flex-end {
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5px;
+}

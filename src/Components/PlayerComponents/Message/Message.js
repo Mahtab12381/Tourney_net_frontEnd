@@ -9,6 +9,7 @@ function Message() {
   const [selectedteam, setselectedteam] = useState("Team Name");
   const [selectedteam_id, setselectedteam_id] = useState();
   const [message, setmessage] = useState([]);
+  const [reg, setreg] = useState([]);
   const [allmessage, setallmessage] = useState([]);
   const [messageText, setmessageText] = useState("");
 
@@ -46,6 +47,20 @@ function Message() {
         setmessage(result);
       }
       getMessage();
+
+      async function getReg() {
+        let reg = await fetch("http://localhost:51753/api/reg", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        reg = await reg.json();
+        setreg(reg);
+      }
+        getReg();
+
   }, [userID]);
 
   async function getMessage() {
@@ -58,6 +73,10 @@ function Message() {
     });
     result = await result.json();
     setallmessage(result);
+  }
+  function idToName(id) {
+    let forname = reg.filter((obj) => obj.Id === id);
+    return forname[0].UserName;
   }
 
     const handleMessage = (team_id,team_name) => (e) => { 
@@ -122,10 +141,16 @@ function Message() {
                     {message && selectedteam!=="Team Name" ? message.map((item) => (
                         item.Sender_id===userID?
                          <div class="Message-body-content-1">
+                            <div class='msg-group'>
+                            <p class='flex-end'>{idToName(item.Sender_id)}</p>
                             <h6>{item.Message}</h6>
+                            </div>  
                          </div>:
                         <div class="Message-body-content-2">
+                            <div class='msg-group'>
+                            <p class='flex-end-2'>{idToName(item.Sender_id)}</p>
                             <h6>{item.Message}</h6>
+                            </div> 
                          </div>
                     )):null}
                     </div>

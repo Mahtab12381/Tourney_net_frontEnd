@@ -3,20 +3,11 @@ import './ContactUs.css'
 function ContactUs(){
     return(
         <>
-<Navbar/>
-<div className="container">
-            <div class="container text-center">
+    <Navbar/>
+    <div class="container text-center">
       <div class="row">
-        <div class="col">
-          <h1 class="contactHeader">Contact Us</h1>
-        </div>
       </div>
       <div class="row">
-        <div class="col">
-          <h3 class="contactSubHeader">
-            Any question or remarks? Just write us a message
-          </h3>
-        </div>
       </div>
     </div>
     <div class="container">
@@ -66,7 +57,6 @@ function ContactUs(){
         </div>
       </div>
     </div>
-</div>
         </>
         
     )
