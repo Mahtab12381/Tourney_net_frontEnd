@@ -8,18 +8,21 @@ import './Tournament.css';
 function TournamentDetails() {
   
     const userType = localStorage.getItem('user-info') ? JSON.parse(localStorage.getItem('user-info')).Type : null;
+    const userId = localStorage.getItem('user-info') ? JSON.parse(localStorage.getItem('user-info')).reg_id : null;
     const navigate=useNavigate();
     const [result,setResult] =useState();   
     const [rankings,setRankings] =useState();
     const [Participants,setParticipants] =useState();
     const [matches,setMatches] =useState();
+    const [orgId,setOrgId] =useState();
   const { id } = useParams();
   const tournamentId = id;
   if(!localStorage.getItem('user-info')){
     navigate('/login');
   }
-  const url = "http://localhost:51753/api/tournaments/"+id;
+  
   useEffect(()=>{ 
+    const url = "http://localhost:51753/api/tournaments/"+id;
     async function getResult(){
         let result = await fetch(url,{
             method:'GET',
@@ -30,24 +33,24 @@ function TournamentDetails() {
         });
         result = await result.json();
         setResult(result);
-        setRankings(result.Rankings);
+        setRankings(result.Rankings.sort((a, b) => b.Total_point - a.Total_point));
         setParticipants(result.Participants);
         setMatches(result.Matches);
+        setOrgId(result.Organizer_Id);
     }
     getResult();
-},[url]);
+},[id]);
 
 async function generateMatches(Participants, tournamentId) {
   const randommatches = [];
-  
   for (let i = 0; i < Participants.length; i++) {
     for (let j = i + 1; j < Participants.length; j++) {
       const randommatch = {
         Match_number: randommatches.length + 1,
         Match_start_time: new Date().toISOString(),
         Match_end_time: new Date().toISOString(),
-        w_score: 1,
-        l_score: 1,
+        w_score: 0,
+        l_score: 0,
         Tournament_id: tournamentId,
         Participant_participant_id:1,
         Match_winner_Name: '---',
@@ -66,10 +69,9 @@ async function generateMatches(Participants, tournamentId) {
           body:JSON.stringify(randommatch)
       });
       result = await result.json();
-      console.log(result);
     }
   }
-  
+  window.location.reload();
   return randommatches;
 }
 
@@ -97,23 +99,16 @@ async function generatePointTable(Participants) {
           body:JSON.stringify(participant)
       });
       result = await result.json();
-      console.log(result);
   }
- // Sort point table by total points
-  rankings.sort((a, b) => b.Total_point - a.Total_point);
-
+  window.location.reload();
   return pointTable;
 }
 
-
-
 function genMatch(){
    generateMatches(Participants, tournamentId);
-   alert("Matches Generated");
 }
 function getTable(){
-  console.log(generatePointTable(Participants));
-  alert("Table Generated");
+  generatePointTable(Participants);
 }
 
   return(
@@ -132,7 +127,8 @@ function getTable(){
       <th>Matches Lost</th>
       <th>Total Points</th>
       <th>
-      <button onClick={getTable}>Generate Table</button>
+      {userType==="Organizer" && orgId===userId && rankings.length===0?
+      <button class='btn btn-success' onClick={getTable}>Generate Table</button>:null}  
       </th>
     </tr>
   </thead>
@@ -165,7 +161,8 @@ function getTable(){
       <th>Participant 1</th>
       <th>Participant 2</th>
       <th>
-      <button onClick={genMatch}>Generate Matches</button>
+      {userType==="Organizer" && orgId===userId &&  matches.length===0?
+      <button class='btn btn-success' onClick={genMatch}>Generate Matches</button>:null}
       </th>
     </tr>
   </thead>
@@ -181,7 +178,12 @@ function getTable(){
         <td>{match.l_score}</td>
         <td>{match.participant_name_1}</td>
         <td>{match.participant_name_2}</td>
-        <td></td>
+        <td>
+      {userType==="Organizer" && orgId===userId?
+      <button class='btn btn-success' onClick={() =>
+        navigate(`/editmatch/${match.Match_id}`)
+      } >Edit</button>:null}
+      </td>
       </tr>
     )) : null}
   </tbody>

@@ -10,11 +10,7 @@ function NavbarOrg(){
                     <a className="nav-link active" aria-current="page" href="/login">Home</a>
                     </li><li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/tournament">Tournament</a>
-                    </li><li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/contactus">Stream</a>
-                    </li> <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/contactus">Payment</a>
-                    </li>  
+                    </li>
                     <li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/logout">Log out</a>
                     </li>  

@@ -10,9 +10,7 @@ function Navbar(){
                     <a className="nav-link active" aria-current="page" href="/login">Login</a>
                     </li><li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/signup">Sign Up</a>
-                    </li><li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/contactus">About</a>
-                    </li> 
+                    </li>
                     <li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/contactus">Contact Us</a>
                     </li> 

@@ -21,6 +21,8 @@ function Tournament() {
   const [showRegester, setShowRegester] = useState(false);
   const [myteam, setmyteam] = useState();
   const [selectedTeam, setselectedTeam] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [preresult, setpreresult] = useState();
   const [selectedTournament, setselectedTournament] = useState();
   const [showregtour, setShowregtour] = useState(false); 
 
@@ -36,6 +38,7 @@ function Tournament() {
       result = await result.json();
       var revresult = result.reverse();
       setResult(revresult);
+      setpreresult(revresult);
     }
     
     async function getmyTeam() {
@@ -97,6 +100,16 @@ function Tournament() {
        setResult(result.filter((obj) => obj.tournament_id === 1));
         setShowregtour(true);
     }
+
+    const handleSearch = () => {
+      const filteredresult = result.filter((obj) => obj.tournament_name.includes(searchQuery));
+      setResult(filteredresult);
+      if(searchQuery ===""){
+        setResult(preresult);
+      }
+    };
+
+
   return (
     <>
       {userType === "Organizer" ? (
@@ -126,6 +139,17 @@ function Tournament() {
         </div>
         <div class="container-fluid tournament-container">
           <div class="row">
+          {!showRegester && !show?
+          <div class ='search-div'>
+                    <input
+                      type="text"
+                      class="form-control"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search Players"
+                    />
+                    <button class='btn btn-primary' onClick={handleSearch}>Search</button>
+                  </div>:null}
             {!showRegester && !show && result
               ? result.map((item) => (
                   <div class="col-lg-4 gy-4" key={item.tournament_id}>

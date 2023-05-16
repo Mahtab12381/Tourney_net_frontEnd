@@ -12,6 +12,9 @@ import HomepageFans from './Components/Homepage/HomepageFan';
 import Tournament from './Components/Tournament/Tournament';
 import TournamentDetails from './Components/Tournament/TournamentDetails';
 import Team from './Components/PlayerComponents/Team/Team';
+import Editmatch from './Components/Tournament/Editmatch';
+import ContactUs from './Components/ContactUs/ContactUs';
+import Message from './Components/PlayerComponents/Message/Message';
 function App() {
   return (
     <>
@@ -26,7 +29,10 @@ function App() {
         <Route path="/signup" element={<Registration/>}/>
         <Route path="/tournament" element={<Tournament/>}/>
         <Route path="/view/:id" element={<TournamentDetails/>}/>
-        <Route path="/team" element={<Team/>}/>  
+        <Route path="/editmatch/:id" element={<Editmatch/>}/>
+        <Route path="/team" element={<Team/>}/>
+        <Route path="/contactus" element={<ContactUs/>}/>  
+        <Route path="/message" element={<Message/>}/>  
       </Routes>
     </Router>
     <Footer/>

@@ -13,7 +13,7 @@ function NavbarPlayer(){
                     </li><li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/tournament">Tournaments</a>
                     </li> <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="/contactus">Message</a>
+                    <a className="nav-link active" aria-current="page" href="/message">Message</a>
                     </li>  
                     <li className="nav-item">
                     <a className="nav-link active" aria-current="page" href="/logout">Log out</a>
